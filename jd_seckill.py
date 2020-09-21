@@ -14,10 +14,35 @@ config = {
         'goods_url':'https://item.jd.com/10021776150443.html',
         'order_time':'2020-09-21 20:30:00',
     },
-    '七彩虹 水神 3080':{
+    'GeForce RTX 3080 金属大师':{
         'thor':'',
-        'goods_url':'https://item.jd.com/10021776150443.html',
-        'order_time':'2020-09-21 20:40:00',
+        'goods_url':'https://item.jd.com/100015325224.html',
+        'order_time':'2020-09-25 10:00:00',
+    },
+    '技嘉 GIGABYTE GV-RTX3080GAMING':{
+        'thor':'',
+        'goods_url':'https://item.jd.com/100015042086.html',
+        'order_time':'2020-09-25 10:00:00',
+    },
+    '技嘉 GIGABYTE RTX3080EAGLE OC':{
+        'thor':'',
+        'goods_url':'https://item.jd.com/100008461335.html',
+        'order_time':'2020-09-25 10:00:00',
+    },
+    '索泰(ZOTAC)RTX3080天启OC':{
+        'thor':'',
+        'goods_url':'https://item.jd.com/100008576071.html',
+        'order_time':'2020-10-12 00:00:00',
+    },
+    '索泰(ZOTAC)RTX 3080 X-GAMING':{
+        'thor':'',
+        'goods_url':'https://item.jd.com/100015492922.html',
+        'order_time':'2020-10-12 00:00:00',
+    },
+    '七彩虹（Colorful）火神iGame GeForce RTX 3080 Vulcan':{
+        'thor':'',
+        'goods_url':'https://item.jd.com/100015151410.html',
+        'order_time':'2020-09-24 20:30:00',
     }
 }
 
@@ -43,7 +68,7 @@ class JD:
         self.session = requests.session()
 
         # 配置项 只要填这5个 1.cookie 2.url 3.秒杀时间 4.秒杀总次数限制 5.秒杀请求间隙
-        self.thor = '01D9D4FEE370BB8557B74456D290C8C30F3F874F1F5C3E72C9C2CE53C83758B2A44F86328533DA69B8E1D16085AD363E28FD66831496AA34466DE7890685E280379A4F653CF2FF8BC3728CB4EBD4C0F80E500858AC3639D89AF2AA04F5E2A2EE0CB39BFE556FA1F5D9B9349F21D28BBF6A62DDE02CC80656AB6C0DC1EC6EA1AEF4E7E0CEFC9198A19A5A00185747A6DF3402E02B278333411D70D77EFA660B40'	
+        self.thor = ''	
         self.goods_url = 'https://item.jd.com/10021776150443.html'
         self.order_time = '2020-09-21 20:30:00'
         self.retry_limit = 20
@@ -132,7 +157,5 @@ jd.login()
 
 while 1:
     pass
-
-  
 
   
