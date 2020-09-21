@@ -11,3 +11,4 @@
         self.order_time = '2020-09-21 20:30:00'
         self.retry_limit = 20
         self.gap = 0.1
+更新了近几天的京东3080预约
