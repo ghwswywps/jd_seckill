@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6  
+#!/usr/bin/python3
 # -*- coding: utf-8 -*- 
 
 import requests
@@ -11,38 +11,8 @@ import _thread
 config = {
     '七彩虹 AD 3080':{
         'thor':'',
-        'goods_url':'https://item.jd.com/10021776150443.html',
+        'goods_url':'https://item.jd.com/100015062680.html',
         'order_time':'2020-09-21 20:30:00',
-    },
-    'GeForce RTX 3080 金属大师':{
-        'thor':'',
-        'goods_url':'https://item.jd.com/100015325224.html',
-        'order_time':'2020-09-25 10:00:00',
-    },
-    '技嘉 GIGABYTE GV-RTX3080GAMING':{
-        'thor':'',
-        'goods_url':'https://item.jd.com/100015042086.html',
-        'order_time':'2020-09-25 10:00:00',
-    },
-    '技嘉 GIGABYTE RTX3080EAGLE OC':{
-        'thor':'',
-        'goods_url':'https://item.jd.com/100008461335.html',
-        'order_time':'2020-09-25 10:00:00',
-    },
-    '索泰(ZOTAC)RTX3080天启OC':{
-        'thor':'',
-        'goods_url':'https://item.jd.com/100008576071.html',
-        'order_time':'2020-10-12 00:00:00',
-    },
-    '索泰(ZOTAC)RTX 3080 X-GAMING':{
-        'thor':'',
-        'goods_url':'https://item.jd.com/100015492922.html',
-        'order_time':'2020-10-12 00:00:00',
-    },
-    '七彩虹（Colorful）火神iGame GeForce RTX 3080 Vulcan':{
-        'thor':'',
-        'goods_url':'https://item.jd.com/100015151410.html',
-        'order_time':'2020-09-24 20:30:00',
     }
 }
 
@@ -128,13 +98,14 @@ class JD:
                 continue
             try:
                 if item.retry_limit < 1 :
-                    pass
+                    return
                 
-                item.shopping(item)
+                o = item.shopping(item)
+                if o:
+                    return
                 item.retry_limit = item.retry_limit - 1
             except BaseException:
                 continue
-            pass
         pass
 
     def shopping(self, item):
@@ -151,6 +122,7 @@ class JD:
         order_id = json.loads(response.text).get('orderId')
         if order_id:
             print('抢购成功订单号:', order_id)
+            return True
 
 jd = JD()
 jd.login()	
