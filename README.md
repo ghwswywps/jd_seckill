@@ -24,3 +24,9 @@
 -----
 
 修复bug 用类unix使用体验最佳
+
+
+-----
+
+不用配置秒杀配置了只需要设置thor即可自动预约+抢购近期所有的京东自营3080 （thor时间过长可能会失效）  
+需要 pip3 install requests beautifulsoup4 html5lib
