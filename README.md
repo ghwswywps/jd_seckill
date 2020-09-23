@@ -30,3 +30,7 @@
 
 不用配置秒杀配置了只需要设置thor即可自动预约+抢购近期所有的京东自营3080 （thor时间过长可能会失效）  
 需要 pip3 install requests beautifulsoup4 html5lib
+
+-----
+此次更新后，可以保持thor长时间不失效了，增加1小时扫描一次是否有新3080上架并自动预约抢购，现在可以nohup后台运行了
+如果遇到html解析器报错的问题(一般是py3环境问题) 可以全文删除 `features='html5lib'` 这个参数 不影响脚本。
