@@ -34,4 +34,8 @@
 
 -----
 此次更新后，可以保持thor长时间不失效了，增加1小时扫描一次是否有新3080上架并自动预约抢购，现在可以nohup后台运行了
-如果遇到html解析器报错的问题(一般是py3环境问题) 可以全文删除 `features='html5lib'` 这个参数 不影响脚本。
+如果遇到html解析器报错的问题(一般是py3环境问题) 可以全文删除 `features='html5lib'` 这个参数 不影响脚本。  
+
+效果:  
+![1](https://github.com/ghwswywps/jd_seckill/blob/master/run.png?raw=true)
+![2](https://github.com/ghwswywps/jd_seckill/blob/master/to.png?raw=true)
