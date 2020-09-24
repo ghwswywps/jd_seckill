@@ -39,10 +39,7 @@ class JD:
         self.appoint_url = ''
         self.config = {}
 
-        # 配置项 只要填这5个 1.cookie 2.url 3.秒杀时间 4.秒杀总次数限制 5.秒杀请求间隙
         self.thor = thor
-        self.goods_url = 'https://item.jd.com/10021776150443.html'
-        self.order_time = '2020-09-21 20:30:00'
         self.retry_limit = 20
         self.gap = 0.1
         
@@ -171,6 +168,8 @@ class JD:
         print('开始预约\n')
         for key in self.config:
             if not self.config[key]['appoint']:
+                if not self.config[key]['appoint_url']:
+                    continue
                 ares = self.session.get(url='https:' + self.config[key]['appoint_url'], headers=JD.headers)
                 bf = BeautifulSoup(ares.text, features='html5lib')
                 texts = bf.find_all(class_ = 'bd-right-result')
