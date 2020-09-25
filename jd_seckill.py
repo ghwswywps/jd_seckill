@@ -192,5 +192,5 @@ jd.login()
 
 
 while 1:
-    pass
+    time.sleep(10)
 
