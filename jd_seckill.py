@@ -89,8 +89,6 @@ class JD:
                 self.config[key]['order_time_st'] = order_time_st
                 item.goods_url = self.config[key]['goods_url']
                 item.order_time = self.config[key]['order_time']
-                #重试计数
-				item.retry_count = 0
                 _thread.start_new_thread( self.run, (item, ))
                 pass
             _thread.start_new_thread(self.log,())
@@ -156,6 +154,7 @@ class JD:
         item.session.get(url=buy_url, headers=JD.headers)  
         #修正购物车商品数量（第二次重试后修正购物车数量）
         if item.retry_count > 0 :
+            print('第',item.retry_count,'次重试，抢购商品为：',item.goods_id,'修正购物车商品数量。')
             change_num_url = item.change_num.format(item.goods_id)
             item.session.get(url=change_num_url, headers=JD.headers)
         #get请求
