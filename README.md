@@ -1,9 +1,9 @@
 # jd_seckill  
   
 感谢 jsxzBillLee的贡献  
-需要 python3
-需要 pip3 install requests beautifulsoup4 html5lib
-需要cookie中的thor
+需要 python3   
+需要 pip3 install requests beautifulsoup4 html5lib   
+需要cookie中的thor   
 
 
 -----
