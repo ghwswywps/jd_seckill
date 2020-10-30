@@ -8,10 +8,10 @@ import os
 import copy
 import _thread
 from bs4 import BeautifulSoup
-
+#cookie，可以在我的订单页面，搜索list的网络请求，获取cookie值
 thor = ''
 
-
+#日志模板，有颜色和状态
 LOG_TEMPLE_BLUE='\033[1;34m{}\033[0m '
 LOG_TEMPLE_RED='\033[1;31m{}\033[0m '
 LOG_TEMPLE_SUCCESS='\033[1;32mSUCCESS\033[0m '
@@ -23,39 +23,66 @@ class JD:
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
     }
 
+    #初始化配置
     def __init__(self):
         self.index = 'https://www.jd.com/'
+        #用户信息获取地址
         self.user_url = 'https://passport.jd.com/user/petName/getUserInfoForMiniJd.action?&callback=jsonpUserinfo&_=' + \
             str(int(time.time() * 1000)) 
+        #加购物车
         self.buy_url = 'https://cart.jd.com/gate.action?pid={}&pcount=1&ptype=1'   
+        #修改购物车商品数量为1
+        self.change_num = 'https://cart.jd.com/changeNum.action?pid={}&pcount=1&ptype=1'
+        #下单
         self.pay_url = 'https://cart.jd.com/gotoOrder.action'  
+        #订单提交
         self.pay_success = 'https://trade.jd.com/shopping/order/submitOrder.action'  
+        #商品id
         self.goods_id = ''  
+        #会话
         self.session = requests.session()
 
+        #3080搜索链接
         self.rep_url = 'https://search.jd.com/search?keyword=3080&wq=3080&ev=24_95631%5E&shop=1&click=1'
+        #耕升3080追风
         self.g_url = 'https://item.jd.com/100015062658.html'
+        #商品详情地址
         self.item_info_url = 'https://item-soa.jd.com/getWareBusiness?skuId={}'
+        #预约地址
         self.appoint_url = ''
         self.config = {}
 
+        #cookie
         self.thor = thor
+        #重试次数限制
         self.retry_limit = 20
+        #重试间隔
         self.gap = 0.1
+        #重试计数
+        self.retry_count = 0
         
 
 
+    #登录，然后抢预约成功的商品
     def login(self): 
+        #设置header为购物车地址
         JD.headers['referer'] = 'https://cart.jd.com/cart.action'
+        #创建cookie
         c = requests.cookies.RequestsCookieJar()
+        #设置cookie内容
         c.set('thor', self.thor)  
+        #更新session中的cookie，使session生效
         self.session.cookies.update(c)
+        #1通过session获取用户信息
         response = self.session.get(
             url=self.user_url, headers=JD.headers).text.strip('jsonpUserinfo()\n')
+        #1.1调用内置的loads方法获取json格式的用信息
         self.user_info = json.loads(response)
         if self.user_info.get('nickName'):
+            #遍历预约成功的商品，挨个抢购
             for key in self.config:
                 item = copy.copy(self)
+                #下单时间（使用本机时间，记得和京东服务器同步时间）
                 timeArray = time.strptime(self.config[key]['order_time'], "%Y-%m-%d %H:%M")
                 order_time_st = int(time.mktime(timeArray))
                 item.order_time_st = order_time_st
@@ -67,6 +94,7 @@ class JD:
             _thread.start_new_thread(self.log,())
             pass
             
+    #日志方法
     def log(self):
         clock = round(time.time())
         i = 0
@@ -105,22 +133,33 @@ class JD:
                     return
                 
                 o = item.shopping(item)
+                
                 if o:
                     return
                 item.retry_limit = item.retry_limit - 1
+                #重试计数
+                item.retry_count = item.retry_count + 1
             except BaseException:
                 continue
         pass
 
     def shopping(self, item):
+        #获取商品id，从url的/开始位置截取到.位置
         item.goods_id = item.goods_url[
             item.goods_url.rindex('/') + 1:item.goods_url.rindex('.')]
         JD.headers['referer'] = item.goods_url
+        # url格式化，把商品id填入buy_url
         buy_url = item.buy_url.format(item.goods_id)
+        #get请求，添加购物车
         item.session.get(url=buy_url, headers=JD.headers)  
-
+        #修正购物车商品数量（第二次重试后修正购物车数量）
+        if item.retry_count > 0 :
+            print('第',item.retry_count,'次重试，抢购商品为：',item.goods_id,'修正购物车商品数量。')
+            change_num_url = item.change_num.format(item.goods_id)
+            item.session.get(url=change_num_url, headers=JD.headers)
+        #get请求
         item.session.get(url=item.pay_url, headers=JD.headers) 
-
+        #post请求，提交订单
         response = item.session.post(
             url=item.pay_success, headers=JD.headers)
         order_id = json.loads(response.text).get('orderId')
