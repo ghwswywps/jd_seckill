@@ -1,10 +1,13 @@
 # jd_seckill  
+
   
 感谢 jsxzBillLee的贡献  
 需要 python3   
 需要 pip3 install requests beautifulsoup4 html5lib   
 需要cookie中的thor   
 
+最近写了一套亚马逊PS5/XSX 到货监控，为了防止亚马逊识别风控，暂时闭源，需要提醒的兄弟关注微信公众号pushplus并且在pushplus.hxtrip.com获取token发至我的邮箱：  
+i@abigant.com
 
 -----
 目前已知bug：
