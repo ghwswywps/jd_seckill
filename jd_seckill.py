@@ -9,7 +9,7 @@ import copy
 import _thread
 from bs4 import BeautifulSoup
 #cookie，可以在我的订单页面，搜索list的网络请求，获取cookie值
-thor = '01D9D4FEE370BB8557B74456D290C8C30F3F874F1F5C3E72C9C2CE53C83758B29363E4EBB1FFF13C7320EC00D99391D287238F38D31717238FE7773E82C627A37C74E7218D007E4EF21082A103FF4A1EFE713F72E604C821A3C4E3095746BFAEA5EB3F37C963596BDE503E1DA96044346D67AF3EDD28CBBA84AAF19B0AD78BE53C972726E1EDC7A2823267521D868A8487C3A0588AC3A7C402786A2705C86BCC'
+thor = ''
 #日志模板，有颜色和状态
 LOG_TEMPLE_BLUE='\033[1;34m{}\033[0m '
 LOG_TEMPLE_RED='\033[1;31m{}\033[0m '
@@ -44,7 +44,7 @@ class JD:
         self.session = requests.session()
 
         #3080搜索链接
-        self.rep_url = 'https://search.jd.com/search?keyword=3080&wq=3080&ev=24_95631%5E&shop=1&click=1'
+        self.rep_url = 'https://search.jd.com/search?keyword=3080&qrst=1&wq=3080&shop=1&ev=exbrand_%E4%B8%83%E5%BD%A9%E8%99%B9%EF%BC%88Colorful%EF%BC%89%5E296_136030%5Eexprice_6299-6299%5E'
         #耕升3080追风
         self.g_url = 'https://item.jd.com/100015062658.html'
         #商品详情地址

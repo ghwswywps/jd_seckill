@@ -6,6 +6,15 @@
 需要 pip3 install requests beautifulsoup4 html5lib   
 需要cookie中的thor   
 
+请将rep_url修改成自己想要的3080搜索链接 目前已经无法保证一定可以框定自营原价商品
+推荐：
+TUF OC
+https://search.jd.com/search?keyword=3080%20tuf%20oc&qrst=1&suggest=2.def.0.base&wq=3080%20tuf%20oc&shop=1&ev=exbrand_%E5%8D%8E%E7%A1%95%EF%BC%88ASUS%EF%BC%89%5E296_136030%5Eexprice_0-6299%5E
+ADOC
+https://search.jd.com/search?keyword=3080&qrst=1&wq=3080&shop=1&ev=exbrand_%E4%B8%83%E5%BD%A9%E8%99%B9%EF%BC%88Colorful%EF%BC%89%5E296_136030%5Eexprice_6299-6299%5E
+
+本人抢到的是tuf oc，个人认为目前只有这两款比较值，不过如果tuf设置限定会员抢购次脚本可能会失效。
+
 最近写了一套亚马逊PS5/XSX 到货监控，为了防止亚马逊识别风控，暂时闭源，需要提醒的兄弟关注微信公众号pushplus并且在pushplus.hxtrip.com获取token发至我的邮箱：  
 i@abigant.com
 
