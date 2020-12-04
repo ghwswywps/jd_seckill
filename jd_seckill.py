@@ -9,8 +9,7 @@ import copy
 import _thread
 from bs4 import BeautifulSoup
 #cookie，可以在我的订单页面，搜索list的网络请求，获取cookie值
-thor = ''
-
+thor = '01D9D4FEE370BB8557B74456D290C8C30F3F874F1F5C3E72C9C2CE53C83758B29363E4EBB1FFF13C7320EC00D99391D287238F38D31717238FE7773E82C627A37C74E7218D007E4EF21082A103FF4A1EFE713F72E604C821A3C4E3095746BFAEA5EB3F37C963596BDE503E1DA96044346D67AF3EDD28CBBA84AAF19B0AD78BE53C972726E1EDC7A2823267521D868A8487C3A0588AC3A7C402786A2705C86BCC'
 #日志模板，有颜色和状态
 LOG_TEMPLE_BLUE='\033[1;34m{}\033[0m '
 LOG_TEMPLE_RED='\033[1;31m{}\033[0m '
@@ -26,6 +25,8 @@ class JD:
     #初始化配置
     def __init__(self):
         self.index = 'https://www.jd.com/'
+
+        self.clock_url = 'https://a.jd.com//ajax/queryServerData.html'
         #用户信息获取地址
         self.user_url = 'https://passport.jd.com/user/petName/getUserInfoForMiniJd.action?&callback=jsonpUserinfo&_=' + \
             str(int(time.time() * 1000)) 
@@ -55,24 +56,21 @@ class JD:
         #cookie
         self.thor = thor
         #重试次数限制
-        self.retry_limit = 20
+        self.retry_limit = 100
         #重试间隔
         self.gap = 0.1
         #重试计数
         self.retry_count = 0
+        #本地时间与京东时间差
+        self.time_diff = 0.1
         
-
+    def initTime(self):
+        ret = requests.get(self.clock_url).text
+        js = json.loads(ret)
+        self.time_diff = js.get('serverTime')/1000 - time.time() + 0.001
 
     #登录，然后抢预约成功的商品
-    def login(self): 
-        #设置header为购物车地址
-        JD.headers['referer'] = 'https://cart.jd.com/cart.action'
-        #创建cookie
-        c = requests.cookies.RequestsCookieJar()
-        #设置cookie内容
-        c.set('thor', self.thor)  
-        #更新session中的cookie，使session生效
-        self.session.cookies.update(c)
+    def buy(self): 
         #1通过session获取用户信息
         response = self.session.get(
             url=self.user_url, headers=JD.headers).text.strip('jsonpUserinfo()\n')
@@ -93,6 +91,7 @@ class JD:
                 pass
             _thread.start_new_thread(self.log,())
             pass
+
             
     #日志方法
     def log(self):
@@ -121,12 +120,12 @@ class JD:
                     self.appoint()
                     i = 0           
             pass
-        pass
+        
 
     def run(self, item):
         while True:
             time.sleep(item.gap)
-            if time.time() <= item.order_time_st:
+            if time.time() + self.time_diff <= item.order_time_st:
                 continue
             try:
                 if item.retry_limit < 1 :
@@ -141,7 +140,7 @@ class JD:
                 item.retry_count = item.retry_count + 1
             except BaseException:
                 continue
-        pass
+        
 
     def shopping(self, item):
         #获取商品id，从url的/开始位置截取到.位置
@@ -175,6 +174,9 @@ class JD:
         response = self.session.get(
             url=self.user_url, headers=JD.headers).text.strip('jsonpUserinfo()\n')
         self.user_info = json.loads(response)
+        if not self.user_info.get('nickName'):
+            raise Exception("账号验证错误请检查thor")
+
         p = self.session.get(url=self.rep_url, headers=JD.headers) 
         bf = BeautifulSoup(p.text, features='html5lib')
         texts = bf.find_all('div', class_ = 'p-name p-name-type-2') 
@@ -227,7 +229,7 @@ class JD:
 jd = JD()
 jd.rep()
 jd.appoint()
-jd.login()	
+jd.buy()	
 
 
 while 1:
